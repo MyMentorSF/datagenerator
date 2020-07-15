@@ -1,0 +1,14 @@
+{
+  "name": "user-data-generator",
+  "version": "1.0.0",
+  "description": "Generates random data for a user",
+  "main": "handler.js",
+  "scripts": {
+    "test": "node ./handler.js"
+  },
+  "author": "David Brooks",
+  "license": "MIT",
+  "dependencies": {
+    "faker": "^4.1.0"
+  }
+}
