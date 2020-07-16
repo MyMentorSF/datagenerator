@@ -120,8 +120,6 @@ function getRandomDate() {
 }
 
 function scheduleAppointment(user1, user2) {
-  let host = user1;
-  let guest = user2;
   let startTime = new Date(
     getRandomDate().getTime() +
     randomNumber(7, 16) * 60 * 60000 +
@@ -137,10 +135,10 @@ function scheduleAppointment(user1, user2) {
     id:
       Math.random().toString(36).substring(2, 15) +
       Math.random().toString(36).substring(2, 15), // Don't send from client side
-    host: host.username,
-    guest: guest.username,
-    hostEmail: host.email,
-    guestEmail: guest.email,
+    host: user1.username,
+    guest: user2.username,
+    hostEmail: user1.email,
+    guestEmail: user2.email,
     guestConfirmed: true, // Don't send. Will be auto confirmed in lambda
   };
 }
@@ -158,30 +156,16 @@ function generateAppointments(user, users) {
 function makePrivateUser(user) {
   let _mentors = user.isMentee ? mentors() : [];
   let _mentees = user.isMentor ? mentees() : [];
-  return {
-    uuid:
-      "a" +
-      Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15),
-    username: user.username,
-    email: user.email,
-    firstName: user.firstName, //String
-    lastName: user.lastName, //String
-    pronoun: user.pronoun,
-    age: user.age,
-    yearsOfExperience: user.yearsOfExperience,
-    description: user.description,
-    isMentor: user.isMentor,
-    isMentee: user.isMentee,
-    mentors: _mentors,
-    mentees: _mentees,
-    agenda: generateAppointments(user, _mentors.concat(_mentees)),
-    role: user.role,
-    department: user.department,
-    location: user.location,
-    interests: user.interest,
-    education: user.education,
-  };
+  let priv = JSON.parse(JSON.stringify(user));
+  priv.uuid =
+    "a" +
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  priv.mentors = _mentors;
+  priv.mentees = _mentees;
+  priv.agenda = generateAppointments(user, _mentors.concat(_mentees));
+  return priv
+
 }
 
 function createConnection(mentor, mentee) {
@@ -199,5 +183,7 @@ module.exports = {
   randomNumber,
   getRandomElement,
   getRandomElements,
-  scheduleAppointment
+  scheduleAppointment,
+  mentors,
+  mentees
 };

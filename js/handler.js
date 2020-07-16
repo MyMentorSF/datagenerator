@@ -24,7 +24,7 @@ function getUser(uuid) {
   for (let i = 0; i < userTable.length; i++) {
     if (uuid == userTable[i].uuid) return userTable[i];
   }
-  return null;
+  throw new Error(`User not found ${uuid}`);
 }
 
 console.log(`Mentors: ${mentorList.length} Mentees: ${menteeList.length}`);
@@ -55,13 +55,14 @@ while (connectionsTable.length < amount) {
     }
   });
 }
+console.log(`Connections: ${connectionsTable.length}`)
 connectionsTable = [...new Set(connectionsTable)];
 writeStream = fs.createWriteStream(connections);
 writeStream.write(JSON.stringify(connectionsTable), "utf8");
 
 // ======================Appointments=============================================================
 
-amount = api.randomNumber(2, connectionsTable.length);
+amount = api.randomNumber(Math.min(6, connectionsTable.length), connectionsTable.length);
 while (appointmentTable.length < amount) {
   connectionsTable.forEach((connection) => {
     let tor = getUser(connection.mentorUUID);
@@ -69,6 +70,7 @@ while (appointmentTable.length < amount) {
     appointmentTable.push(api.scheduleAppointment(tor, tee));
   });
 }
+console.log(`Appointments: ${appointmentTable.length}`)
 appointmentTable = [...new Set(appointmentTable)];
 writeStream = fs.createWriteStream(appointments);
 writeStream.write(JSON.stringify(appointmentTable), "utf8");
@@ -85,7 +87,7 @@ function getMentees(mentor) {
 
 function getAppointments(user) {
   return appointmentTable.filter((a) => {
-    return a.host === user.username || a.guest === user.username;
+    return (a.host === user.username || a.guest === user.username);
   });
 }
 
