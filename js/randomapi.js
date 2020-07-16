@@ -199,4 +199,5 @@ module.exports = {
   randomNumber,
   getRandomElement,
   getRandomElements,
+  scheduleAppointment
 };
