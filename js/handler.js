@@ -85,7 +85,7 @@ function getMentees(mentor) {
 
 function getAppointments(user) {
   return appointmentTable.filter((a) => {
-    a.host === user.username || a.guest === user.username;
+    return a.host === user.username || a.guest === user.username;
   });
 }
 
