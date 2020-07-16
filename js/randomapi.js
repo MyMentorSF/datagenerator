@@ -126,21 +126,20 @@ function scheduleAppointment(user1, user2) {
     randomNumber(0, 12) * 5 * 60000
   );
   let endTime = new Date(startTime.getTime() + 60000 * randomNumber(1, 2) * 30);
-  return {
+  let ret = {
     title: faker.lorem.words(5),
     summary: faker.lorem.sentences(2),
     location: getRandomElement(locations),
     startDate: startTime,
     endDate: endTime,
-    id:
-      Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15), // Don't send from client side
     host: user1.username,
     guest: user2.username,
     hostEmail: user1.email,
     guestEmail: user2.email,
     guestConfirmed: true, // Don't send. Will be auto confirmed in lambda
   };
+  ret.id = ret.startDate + ret.hostEmail + ret.guestEmail;
+  return ret;
 }
 
 function generateAppointments(user, users) {
