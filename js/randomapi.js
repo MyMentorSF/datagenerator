@@ -134,7 +134,9 @@ function scheduleAppointment(user1, user2) {
     location: getRandomElement(locations),
     startDate: startTime,
     endDate: endTime,
-    id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15), // Don't send from client side
+    id:
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15), // Don't send from client side
     host: host.username,
     guest: guest.username,
     hostEmail: host.email,
@@ -157,7 +159,10 @@ function makePrivateUser(user) {
   let _mentors = user.isMentee ? mentors() : [];
   let _mentees = user.isMentor ? mentees() : [];
   return {
-    uuid: "a" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+    uuid:
+      "a" +
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15),
     username: user.username,
     email: user.email,
     firstName: user.firstName, //String
@@ -179,4 +184,19 @@ function makePrivateUser(user) {
   };
 }
 
-module.exports = { randomPublicUser, makePrivateUser }
+function createConnection(mentor, mentee) {
+  return {
+    mentorUUID: mentor.uuid,
+    menteeUUID: mentee.uuid,
+    confirmed: true,
+  };
+}
+
+module.exports = {
+  randomPublicUser,
+  makePrivateUser,
+  createConnection,
+  randomNumber,
+  getRandomElement,
+  getRandomElements,
+};
