@@ -157,7 +157,7 @@ function makePrivateUser(user) {
   let _mentors = user.isMentee ? mentors() : [];
   let _mentees = user.isMentor ? mentees() : [];
   return {
-    uuid: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+    uuid: "a" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
     username: user.username,
     email: user.email,
     firstName: user.firstName, //String
@@ -179,47 +179,4 @@ function makePrivateUser(user) {
   };
 }
 
-// let userReturn = randomPublicUser();
-// api.publicProfile = userReturn;
-// let private = makePrivateUser(userReturn);
-// api.privateProfile = private
-let legitList = [];
-let mentorList = [];
-let menteeList = [];
-for (let i = 0; i < 40; i++) {
-  let userReturn = randomPublicUser();
-  let private = makePrivateUser(userReturn);
-  delete private.mentors;
-  delete private.mentees;
-  delete private.agenda;
-  legitList.push(private);
-  if (private.isMentor) {
-    mentorList.push(private)
-  }
-  if (private.isMentee) {
-    menteeList.push(private)
-  }
-}
-
-console.log(`Mentors: ${mentorList.length} Mentees: ${menteeList.length}`)
-
-let privateUsers = "../private.json";
-let appointments = "../appointments.json";
-let connections = "../connections.json";
-const fs = require('fs');
-let writeStream = fs.createWriteStream(privateUsers);
-legitList.forEach((us) => {
-  writeStream.write(JSON.stringify(us), "utf8");
-  writeStream.write("\n", "utf8");
-})
-
-// legitList.forEach((person) => {
-//   if (person.isMentee) {
-//     let ment = getRandomElement(mentorList);
-//     while (ment.username != person.username) 
-//     {
-//       ment = getRandomElement(mentorList);
-//     }
-
-//   }
-// })
+module.exports = { randomPublicUser, makePrivateUser }
