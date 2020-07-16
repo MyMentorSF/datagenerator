@@ -41,7 +41,7 @@ writeStream.write(JSON.stringify(userTable), "utf8");
 // ======================Connections=============================================================
 
 let amount = api.randomNumber(
-  2,
+  Math.min(6, connectionsTable.length),
   Math.min(mentorList.length, menteeList.length)
 );
 while (connectionsTable.length < amount) {
